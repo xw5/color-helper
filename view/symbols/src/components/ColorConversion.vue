@@ -170,7 +170,12 @@ watch(colorPickerRef, (newVal, oldVal) => {
   formState.value.colorcmyk = cmykToString(convert.rgbaToCmyk(rgbaObj));
 });
 
-const tipss = ref(['支持表单输入值后失去焦点自动转换','支持picker选择颜色后自动转换','支持一键复制转换结果']);
+const tipss = ref([
+	'支持表单输入值后失去焦点自动转换',
+	'支持picker选择颜色后自动转换',
+	'支持一键复制转换结果',
+	'默认初始颜色会设置为唤起前编辑器中选中的颜色值',
+]);
 
 onBeforeMount(() => {
 	window.addEventListener('hbuilderxReady', () => {
@@ -179,15 +184,15 @@ onBeforeMount(() => {
 				console.log('msg: ', msg);
 				if (msg.command == 'initColor') {
 					let initColor = '';
-					if (msg.value.include('#')) {
+					if (msg.value.includes('#')) {
 						initColor = rgbaToString(convert.hexToRgba(msg.value));
-					} else if(msg.value.include('rgba')) {
+					} else if(msg.value.includes('rgba')) {
 						initColor = msg.value;
-					} else if(msg.value.include('rgb')) {
+					} else if(msg.value.includes('rgb')) {
 						initColor = rgbaToString(convert.rgbToRgba(msg.value));
-					} else if(msg.value.include('hsla')) {
+					} else if(msg.value.includes('hsla')) {
 						initColor = rgbaToString(convert.hslaToRgba(msg.value));
-					} else if(msg.value.include('hsl')) {
+					} else if(msg.value.includes('hsl')) {
 						initColor = rgbaToString(convert.hslToRgba(msg.value));
 					} else {
 						initColor = 'rgba(0, 255, 0, 1)';

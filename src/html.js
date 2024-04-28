@@ -1,9 +1,9 @@
 const path = require('path');
 
-const indexFile = path.join(path.resolve(__dirname), '../view/symbols/dist/assets', 'index-DAZb6K59.js');
-const legacyFile = path.join(path.resolve(__dirname), '../view/symbols/dist/assets', 'index-legacy-CgAX08QL.js');
+const indexFile = path.join(path.resolve(__dirname), '../view/symbols/dist/assets', 'index-C_lBEkyx.js');
+const legacyFile = path.join(path.resolve(__dirname), '../view/symbols/dist/assets', 'index-legacy-Db8uEfFy.js');
 const polyfillFile = path.join(path.resolve(__dirname), '../view/symbols/dist/assets', 'polyfills-legacy-DdeYTL8U.js');
-const cssFile = path.join(path.resolve(__dirname), '../view/symbols/dist/assets', 'index-DsXsAf-_.css');
+const cssFile = path.join(path.resolve(__dirname), '../view/symbols/dist/assets', 'index-BhK13ov9.css');
 
 
 function Html() {

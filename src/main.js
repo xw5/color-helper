@@ -17,7 +17,7 @@ function showView(param) {
         title: "颜色助手",
         description: "选择颜色，展示出各种格式的颜色，表单修改颜色后失焦后也会触发颜色格式转换",
         dialogButtons: ['关闭'],
-        size: { width: 960, height: 689 }
+        size: { width: 960, height: 718 }
     }, {
         enableScripts: true
     });
@@ -46,19 +46,21 @@ function showView(param) {
     let promi = webviewDialog.show();
     promi.then(function (data) {
         console.log(data)
+		setTimeout(() => {
+			let editorPromise = hx.window.getActiveTextEditor();
+			editorPromise.then(function(editor) {
+				let selection = editor.selection;
+				let document = editor.document;
+				let word = document.getText(selection);
+				console.log('---- initColor ----', word)
+				webview.postMessage({
+					command: "initColor",
+					value: word
+				});
+			});
+		}, 1000)
     });
 	
-	let editorPromise = hx.window.getActiveTextEditor();
-	editorPromise.then(function(editor) {
-		let selection = editor.selection;
-		let document = editor.document;
-		let word = document.getText(selection);
-		let reversed = word.split('').reverse().join('');
-		webview.postMessage({
-			command: "initColor",
-			value: word
-		});
-	});
 };
 
  /* 插入文本
