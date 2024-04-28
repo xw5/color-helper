@@ -48,11 +48,13 @@ function showView(param) {
         console.log(data)
 		setTimeout(() => {
 			let editorPromise = hx.window.getActiveTextEditor();
+			if (!editorPromise) return;
 			editorPromise.then(function(editor) {
 				let selection = editor.selection;
 				let document = editor.document;
 				let word = document.getText(selection);
-				console.log('---- initColor ----', word)
+				// console.log('---- initColor ----', word)
+				if (!word) return;
 				webview.postMessage({
 					command: "initColor",
 					value: word
