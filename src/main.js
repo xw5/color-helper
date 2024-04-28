@@ -47,6 +47,18 @@ function showView(param) {
     promi.then(function (data) {
         console.log(data)
     });
+	
+	let editorPromise = hx.window.getActiveTextEditor();
+	editorPromise.then(function(editor) {
+		let selection = editor.selection;
+		let document = editor.document;
+		let word = document.getText(selection);
+		let reversed = word.split('').reverse().join('');
+		webview.postMessage({
+			command: "initColor",
+			value: word
+		});
+	});
 };
 
  /* 插入文本

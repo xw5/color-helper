@@ -7,6 +7,7 @@ function activate(context) {
             param = {};
         };
         showView(param);
+		
     });
     context.subscriptions.push(disposable);
 	

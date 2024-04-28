@@ -177,6 +177,23 @@ onBeforeMount(() => {
 		if (hbuilderx) {
 			hbuilderx.onDidReceiveMessage((msg)=>{
 				console.log('msg: ', msg);
+				if (msg.command == 'initColor') {
+					let initColor = '';
+					if (msg.value.include('#')) {
+						initColor = rgbaToString(convert.hexToRgba(msg.value));
+					} else if(msg.value.include('rgba')) {
+						initColor = msg.value;
+					} else if(msg.value.include('rgb')) {
+						initColor = rgbaToString(convert.rgbToRgba(msg.value));
+					} else if(msg.value.include('hsla')) {
+						initColor = rgbaToString(convert.hslaToRgba(msg.value));
+					} else if(msg.value.include('hsl')) {
+						initColor = rgbaToString(convert.hslToRgba(msg.value));
+					} else {
+						initColor = 'rgba(0, 255, 0, 1)';
+					}
+					colorPickerRef.value = initColor;
+				}
 				if(msg.type == 'DialogButtonEvent'){
 					let button = msg.button;
 					if(button == '关闭'){
@@ -212,7 +229,7 @@ onBeforeMount(() => {
 				  v-model:value="formState.color16"
 				  @blur="colorComputed('color16')" 
 				  style="width: calc(100% - 32px)"
-				  placeholder="请输入16进制颜色,如#ff0000,ff0000"
+				  placeholder="请输入16进制颜色,如#ff0000ff,ff0000ff"
 				/>
 				<a-button @click="copyAction(formState.color16, 'color16')">
 				  <template #icon>
