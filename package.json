@@ -1,0 +1,73 @@
+{
+    "id": "hbxw-emojis-helper",
+    "name": "emojis-helper",
+    "description": "一个辅助快速输入emoji表情的插件",
+    "displayName": "emoji表情助手",
+    "version": "0.0.1",
+    "publisher": "xiewu",
+    "engines": {
+        "HBuilderX": "^2.7.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "main": "./extension",
+    "activationEvents": [
+        "onCommand:emojis.emojis",
+        "onCommand:emojis.about"
+    ],
+    "contributes": {
+        "commands": [
+            {
+                "command": "emojis.emojis",
+                "title": "特殊符号"
+            },{
+                "command": "emojis.about",
+                "title": "关于/评价"
+            }
+        ],
+		"keybindings": [
+		  {
+		    "key": "ctrl+shift+alt+e",
+			"macosx": "command+shift+alt+e",
+		    "command": "emojis.emojis",
+		    "when": "editorTextFocus"
+		  }
+		],
+        "menus": {
+        	"editor/context": [
+        	  {
+        	    "command": "emojis.emojis",
+        		"title": "输入emoji表情",
+        	    "group": "z_commands",
+        	    "when": "editorTextFocus"
+        	  }
+        	],
+        	"menubar/tool": [{
+        	    "title": "emoji表情",
+        	    "group": "ext_settings",
+        	    "id": "emojis"
+        	}, {
+        	    "command": "emojis.emojis",
+        	    "title": "输入emoji表情",
+        	    "group": "emojis@1"
+        	}, {
+        	    "group": "emojis@2"
+        	}, {
+        	    "command": "emojis.about",
+        	    "title": "关于/评价",
+        	    "group": "emojis@3"
+        	}]
+        }
+    },
+	"keywords": [
+        "emoji",
+        "emoji",
+        "emogi表情",
+        "emojis.emojis"
+    ],
+	"repository": "https://gitee.com/github-9819409/emoji-helper",
+    "extensionDependencies": [
+        "plugin-manager"
+    ]
+}
