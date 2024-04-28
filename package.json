@@ -1,8 +1,8 @@
 {
-    "id": "hbxw-emojis-helper",
-    "name": "emojis-helper",
-    "description": "一个辅助快速输入emoji表情的插件",
-    "displayName": "emoji表情助手",
+    "id": "hbxw-color-helper",
+    "name": "color-helper",
+    "description": "一个辅助颜色选择和转换的工具",
+    "displayName": "颜色助手",
     "version": "0.0.1",
     "publisher": "xiewu",
     "engines": {
@@ -13,60 +13,60 @@
     ],
     "main": "./extension",
     "activationEvents": [
-        "onCommand:emojis.emojis",
-        "onCommand:emojis.about"
+        "onCommand:colorhelper.colorhelper",
+        "onCommand:colorhelper.about"
     ],
     "contributes": {
         "commands": [
             {
-                "command": "emojis.emojis",
-                "title": "特殊符号"
+                "command": "colorhelper.colorhelper",
+                "title": "颜色助手"
             },{
-                "command": "emojis.about",
+                "command": "colorhelper.about",
                 "title": "关于/评价"
             }
         ],
 		"keybindings": [
 		  {
-		    "key": "ctrl+shift+alt+e",
-			"macosx": "command+shift+alt+e",
-		    "command": "emojis.emojis",
+		    "key": "ctrl+shift+alt+c",
+			"macosx": "command+shift+alt+c",
+		    "command": "colorhelper.colorhelper",
 		    "when": "editorTextFocus"
 		  }
 		],
         "menus": {
         	"editor/context": [
         	  {
-        	    "command": "emojis.emojis",
-        		"title": "输入emoji表情",
+        	    "command": "colorhelper.colorhelper",
+        		"title": "启动颜色助手",
         	    "group": "z_commands",
         	    "when": "editorTextFocus"
         	  }
         	],
         	"menubar/tool": [{
-        	    "title": "emoji表情",
+        	    "title": "颜色助手",
         	    "group": "ext_settings",
-        	    "id": "emojis"
+        	    "id": "colorhelper"
         	}, {
-        	    "command": "emojis.emojis",
-        	    "title": "输入emoji表情",
-        	    "group": "emojis@1"
+        	    "command": "colorhelper.colorhelper",
+        	    "title": "启动颜色助手",
+        	    "group": "colorhelper@1"
         	}, {
-        	    "group": "emojis@2"
+        	    "group": "colorhelper@2"
         	}, {
-        	    "command": "emojis.about",
+        	    "command": "colorhelper.about",
         	    "title": "关于/评价",
-        	    "group": "emojis@3"
+        	    "group": "colorhelper@3"
         	}]
         }
     },
 	"keywords": [
-        "emoji",
-        "emoji",
-        "emogi表情",
-        "emojis.emojis"
+        "颜色",
+        "颜色助手",
+        "color",
+        "colorhelper"
     ],
-	"repository": "https://gitee.com/github-9819409/emoji-helper",
+	"repository": "https://gitee.com/github-9819409/color-helper",
     "extensionDependencies": [
         "plugin-manager"
     ]

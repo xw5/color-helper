@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref, watch, onBeforeMount } from 'vue';
 import { Input as AInput, Button as AButton, message, Form as AForm, FormItem, InputGroup, ColorPicker as AColorPicker } from 'ant-design-vue';
 import { Vue3ColorPicker } from '@cyhnkckali/vue3-color-picker';
 // import convert from 'color-convert';
@@ -16,8 +16,8 @@ import {
 
 import '@cyhnkckali/vue3-color-picker/dist/style.css'
 
-const labelCol = { span: 3 };
-const wrapperCol = { span: 21 };
+const labelCol = { span: 6 };
+const wrapperCol = { span: 18 };
 const formState = ref({
   color16: '',
   colorrgb: '',
@@ -37,7 +37,7 @@ const colorComputed = (type: string) => {
   try {
     switch(type) {
       case 'color16':
-		console.log('---- color16 ----', convert.hexToRgb(formState.value.color16))
+		// console.log('---- color16 ----', convert.hexToRgb(formState.value.color16))
         formState.value.colorrgb = rgbToString(convert.hexToRgb(formState.value.color16));
         formState.value.colorrgba = rgbaToString(convert.hexToRgba(formState.value.color16));
         formState.value.colorhsl = hslToString(convert.hexToHsl(formState.value.color16));
@@ -154,7 +154,7 @@ const copyAction = (text: string, type: string) => {
 }
 
 watch(colorPickerRef, (newVal, oldVal) => {
-  console.log('---- watch ----:colorPickerRef', newVal, oldVal);
+  // console.log('---- watch ----:colorPickerRef', newVal, oldVal);
   const rgbaArr = newVal.match(/(\d+)/g);
   const rgbaObj = {
   	r: +rgbaArr[0],
@@ -171,10 +171,28 @@ watch(colorPickerRef, (newVal, oldVal) => {
 });
 
 const tipss = ref(['支持表单输入值后失去焦点自动转换','支持picker选择颜色后自动转换','支持一键复制转换结果']);
+
+onBeforeMount(() => {
+	window.addEventListener('hbuilderxReady', () => {
+		if (hbuilderx) {
+			hbuilderx.onDidReceiveMessage((msg)=>{
+				console.log('msg: ', msg);
+				if(msg.type == 'DialogButtonEvent'){
+					let button = msg.button;
+					if(button == '关闭'){
+						hbuilderx.postMessage({
+							command: 'closed'
+						});
+					};
+				};
+			});
+		}
+	})
+})
 </script>
 
 <template>
-  <div class="flex flex-col w-full h-screen p-[10px] box-border">
+  <div class="flex flex-col w-full h-screen p-[10px] box-border color-conversion-wrap">
     <div class="flex flex-col w-full">
       <div class="flex flex-row items-center pb-[20px] justify-center w-full flex-none ml-[8px]">
 		  <div class="w-[360px] flex flex-col items-center">
@@ -187,114 +205,120 @@ const tipss = ref(['支持表单输入值后失去焦点自动转换','支持pic
 				type="RGBA"
 			/>
 		  </div>
+		  <a-form style="flex: 1" :label-col="labelCol" :wrapper-col="wrapperCol">
+			<form-item label="16进制颜色">
+			  <input-group compact size="large">
+				<a-input 
+				  v-model:value="formState.color16"
+				  @blur="colorComputed('color16')" 
+				  style="width: calc(100% - 32px)"
+				  placeholder="请输入16进制颜色,如#ff0000,ff0000"
+				/>
+				<a-button @click="copyAction(formState.color16, 'color16')">
+				  <template #icon>
+					<CopyOutlined />
+				  </template>
+				</a-button>
+			  </input-group>
+			</form-item>
+			<form-item label="RGB颜色">
+			  <input-group compact  size="large">
+				<a-input 
+				  v-model:value="formState.colorrgb"
+				  @blur="colorComputed('colorrgb')" 
+				  style="width: calc(100% - 32px)"
+				  placeholder="请输入RGB颜色,如rgb(0,255,0)"
+				/>
+				<a-button @click="copyAction(formState.colorrgb, 'colorrgb')">
+				  <template #icon>
+					<CopyOutlined />
+				  </template>
+				</a-button>
+			  </input-group>
+			</form-item>
+			<form-item label="RGBA颜色">
+			  <input-group compact  size="large">
+				<a-input 
+				  v-model:value="formState.colorrgba"
+				  @blur="colorComputed('colorrgba')" 
+				  style="width: calc(100% - 32px)"
+				  placeholder="请输入RGBA颜色,如rgba(0, 255, 0, 1) / 0, 255, 0, 1"
+				/>
+				<a-button @click="copyAction(formState.colorrgba, 'colorrgba')">
+				  <template #icon>
+					<CopyOutlined />
+				  </template>
+				</a-button>
+			  </input-group>
+			</form-item>
+			<form-item label="HSL颜色">
+			  <input-group compact size="large">
+				<a-input 
+				  v-model:value="formState.colorhsl"
+				  @blur="colorComputed('colorhsl')"  
+				  style="width: calc(100% - 32px)"
+				  placeholder="请输入HSL颜色,如hsl(120, 100, 50) / 120, 100, 50"
+				/>
+				<a-button @click="copyAction(formState.colorhsl, 'colorhsl')">
+				  <template #icon>
+					<CopyOutlined />
+				  </template>
+				</a-button>
+			  </input-group>
+			</form-item>
+			<form-item label="HSLA颜色">
+			  <input-group compact size="large">
+				<a-input 
+				  v-model:value="formState.colorhsla" 
+				  @blur="colorComputed('colorhsla')" 
+				  style="width: calc(100% - 32px)"
+				  placeholder="请输入HSVA颜色,如hsla(120, 100, 50, 1) / 120, 100, 50, 1"
+				/>
+				<a-button @click="copyAction(formState.colorhsla, 'colorhsla')">
+				  <template #icon>
+					<CopyOutlined />
+				  </template>
+				</a-button>
+			  </input-group>
+			</form-item>
+			<form-item label="CMYK颜色">
+			  <input-group compact size="large">
+				<a-input 
+				  v-model:value="formState.colorcmyk" 
+				  @blur="colorComputed('colorcmyk')" 
+				  style="width: calc(100% - 32px)"
+				  placeholder="请输入cmyk颜色,如cmyk(100, 0, 100, 0) / 100, 0, 100, 0"
+				/>
+				<a-button @click="copyAction(formState.colorcmyk, 'colorcmyk')">
+				  <template #icon>
+					<CopyOutlined />
+				  </template>
+				</a-button>
+			  </input-group>
+			</form-item>
+		  </a-form>
+      </div>
+	  <div class="w-full flex flex-row items-center justify-center">
+		  <ul class="list-none text-[14px] text-[#989898]">
+			<li v-for="(item, index) in tipss" :key="index" class="mb-[5px]">
+			  {{index + 1}}. {{ item }}
+			</li>
+		  </ul>
 		  <div class="w-[168px] flex flex-col flex-none items-center">
 			<h3 class="text-black text-[16px]  font-normal mb-[10px]">颜色预览</h3>
 			<div class="w-[100px] h-[100px] border-2 border-gray-200 border-dashed mb-[10px]">
 			  <div class="w-full h-full" :style="{backgroundColor: formState.color16}"></div>
 			</div>
 		  </div>
-		  <ul class="list-none text-[14px] text-[#989898]">
-		    <li v-for="(item, index) in tipss" :key="index" class="mb-[5px]">
-		      {{index + 1}}. {{ item }}
-		    </li>
-		  </ul>
-      </div>
-      <a-form style="flex: 1" :label-col="labelCol" :wrapper-col="wrapperCol">
-        <form-item label="16进制颜色">
-          <input-group compact size="large">
-            <a-input 
-              v-model:value="formState.color16"
-              @blur="colorComputed('color16')" 
-              style="width: calc(100% - 32px)"
-              placeholder="请输入16进制颜色,如#ff0000,ff0000"
-            />
-            <a-button @click="copyAction(formState.color16, 'color16')">
-              <template #icon>
-                <CopyOutlined />
-              </template>
-            </a-button>
-          </input-group>
-        </form-item>
-        <form-item label="RGB颜色">
-          <input-group compact  size="large">
-            <a-input 
-              v-model:value="formState.colorrgb"
-              @blur="colorComputed('colorrgb')" 
-              style="width: calc(100% - 32px)"
-              placeholder="请输入RGB颜色,如rgb(0,255,0)"
-            />
-            <a-button @click="copyAction(formState.colorrgb, 'colorrgb')">
-              <template #icon>
-                <CopyOutlined />
-              </template>
-            </a-button>
-          </input-group>
-        </form-item>
-		<form-item label="RGBA颜色">
-		  <input-group compact  size="large">
-		    <a-input 
-		      v-model:value="formState.colorrgba"
-		      @blur="colorComputed('colorrgba')" 
-		      style="width: calc(100% - 32px)"
-		      placeholder="请输入RGBA颜色,如rgba(0, 255, 0, 1) / 0, 255, 0, 1"
-		    />
-		    <a-button @click="copyAction(formState.colorrgba, 'colorrgba')">
-		      <template #icon>
-		        <CopyOutlined />
-		      </template>
-		    </a-button>
-		  </input-group>
-		</form-item>
-        <form-item label="HSL颜色">
-          <input-group compact size="large">
-            <a-input 
-              v-model:value="formState.colorhsl"
-              @blur="colorComputed('colorhsl')"  
-              style="width: calc(100% - 32px)"
-              placeholder="请输入HSL颜色,如hsl(120, 100, 50) / 120, 100, 50"
-            />
-            <a-button @click="copyAction(formState.colorhsl, 'colorhsl')">
-              <template #icon>
-                <CopyOutlined />
-              </template>
-            </a-button>
-          </input-group>
-        </form-item>
-        <form-item label="HSLA颜色">
-          <input-group compact size="large">
-            <a-input 
-              v-model:value="formState.colorhsla" 
-              @blur="colorComputed('colorhsla')" 
-              style="width: calc(100% - 32px)"
-              placeholder="请输入HSVA颜色,如hsla(120, 100, 50, 1) / 120, 100, 50, 1"
-            />
-            <a-button @click="copyAction(formState.colorhsla, 'colorhsla')">
-              <template #icon>
-                <CopyOutlined />
-              </template>
-            </a-button>
-          </input-group>
-        </form-item>
-		<form-item label="CMYK颜色">
-		  <input-group compact size="large">
-		    <a-input 
-		      v-model:value="formState.colorcmyk" 
-		      @blur="colorComputed('colorcmyk')" 
-		      style="width: calc(100% - 32px)"
-		      placeholder="请输入cmyk颜色,如cmyk(100, 0, 100, 0) / 100, 0, 100, 0"
-		    />
-		    <a-button @click="copyAction(formState.colorcmyk, 'colorcmyk')">
-		      <template #icon>
-		        <CopyOutlined />
-		      </template>
-		    </a-button>
-		  </input-group>
-		</form-item>
-      </a-form>
+	  </div>
     </div>
   </div>
 </template>
 
-<style scoped>
-
+<style scoped lang="scss">
+.color-conversion-wrap {
+	.ant-form-item{
+		margin-bottom: 10px;
+	}
+}
 </style>

@@ -14,10 +14,10 @@ function showView(param) {
     // 创建webviewDialog, 并设置对话框基本属性，包括标题、按钮等
     let webviewDialog = hx.window.createWebViewDialog({
         modal: true,
-        title: "emoji表情",
-        description: "点击emoji表情可以插入emoji表情到当前光标同时会复制当前emoji表情，你也可以去粘贴使用",
+        title: "颜色助手",
+        description: "选择颜色，展示出各种格式的颜色，表单修改颜色后失焦后也会触发颜色格式转换",
         dialogButtons: ['关闭'],
-        size: { width: 960, height: 680 }
+        size: { width: 960, height: 689 }
     }, {
         enableScripts: true
     });
